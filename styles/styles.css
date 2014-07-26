@@ -1,0 +1,269 @@
+/*------Landing Page-----*/
+.landing-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-image: -webkit-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-size: cover;
+}
+
+#centering {
+  width: 20%;
+  margin: 0 auto;
+  margin-top: 16%;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#centering h1 {
+  color: #fff; 
+  font-weight: 400;
+  font-size: 2.6em;
+}
+
+#centering button {
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  font-family: 'Dosis', sans-serif;
+  margin: 0 auto;
+  margin-top: 50px;
+  color: #fff;
+  border-radius: 15px;
+  border: 3px solid #fff;
+  padding: 15px;
+  font-size: 2.3em;
+
+}
+
+
+/*------Main Page------*/
+html {
+  height: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: -webkit-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-size: cover;
+  font-family: 'Dosis', sans-serif;
+  font-size: 16px;
+  color: #ccc;
+  font-weight: 300;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-weight: 300;
+}
+
+.container {
+  padding: 15px 30px;
+}
+
+header {
+  height: 40px;
+  border-bottom: 3px solid #C0FF00;
+  padding-bottom: 5px;
+  box-sizing: content-box;
+}
+
+header h2 {
+  font-size: 1.5em;
+  float: left;
+  width: 70%;
+}
+
+#timer {
+  float: right;
+  text-align: right;
+  background: url(../images/clock.png) no-repeat left center;
+  height: 40px;
+  background-size: contain;
+  padding-left: 50px;
+  line-height: 40px;
+  font-size: 1.8em;
+}
+
+section#words-field {
+  margin-top: 50px;
+  margin-left: 30px;
+  overflow: hidden;
+  width: 50%;
+  float: left;
+}
+
+#words-field ul {
+  width: 400px;
+  height: 400px;
+}
+
+#words-field li {
+  list-style: none;
+  text-align: center;
+  padding-top: 10px;
+  font-size: 3.75em;
+  text-transform: uppercase;
+  height: 100px;
+  width: 100px;
+  color: #E6FF99;
+  float: left;
+  cursor: pointer;
+
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+#words-field li:nth-child(4n+4) {
+  border-right: none;
+}
+
+#words-field li:nth-child(1n+13) {
+  border-bottom: none;
+}
+
+
+/*-----game-panel-section-----*/
+.game-panel {
+  margin-top: 50px;
+  overflow: hidden;
+  width: 45%;
+  float: left;
+}
+
+.current-word {
+  overflow: hidden;
+
+}
+
+.current-word h3 {
+  font-size: 1.5em;
+  padding: 0 30px;
+}
+
+.mark {
+  width: 30px;
+  height: 45px;
+  float: left;
+}
+
+#word-field {
+  text-transform: uppercase;
+  font-size: 2.25em;
+  color: #C0FF00;
+  font-weight: 400;
+  width: 55%;
+  float: left;
+  line-height: 45px;
+  height: 45px;
+  border-bottom: 1px solid #ccc;
+
+}
+
+.buttons {
+  float: right;
+  text-align: right;
+  margin-right: 30px;
+}
+
+.buttons button {
+  font: inherit;
+  padding: 10px 19px;
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  background-color: transparent;
+  outline: none;
+  font-size: 1.1em;
+  color: #ccc;
+}
+
+.total-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.found-words {
+  padding: 0 30px;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.found-words h3 {
+  font-size: 1.5em;
+  width: 50%;
+  float: left;
+}
+
+#total{
+  width: 50%;
+  float: left;
+  text-align: right;
+  font-size: .95em;
+  line-height: 2.57em;
+}
+
+#total span {
+  padding-left: 20px;
+  font-size: 2.57em;
+  color: #c0ff00;
+}
+
+.words-list {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  max-height: 340px;
+  min-height: 50px;
+  padding-bottom: 10px;
+  overflow: scroll;
+}
+
+.words-list li {
+  padding-top: 10px;
+  display: block;
+  overflow: hidden;
+  list-style: none;
+  font-size: 1.5em;
+}
+
+.words-list p {
+  float: left;
+}
+
+.words-list span {
+  float: right;
+}
+
+
+/*   Game styles    */
+.active-letter {
+  background-color: rgba(256,256,256,.3);
+}
+
+.win-mark {
+  background: url(../images/correct_word.png) no-repeat center left;
+  background-size: 20px 20px;
+}
+
+.fail-mark {
+  background: url(../images/wrong_word.png) no-repeat center left;
+  background-size: 20px 20px;
+}
+
+
+/*end of game*/
+.finish {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-image: -webkit-radial-gradient(circle, rgba(51, 51, 51, 0.85) 0%, rgba(0,0,0,.95) 100%), url(../images/1024-768.jpg);
+  background-size: cover;
+}

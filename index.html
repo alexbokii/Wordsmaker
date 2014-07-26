@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Title random game</title>
+  <link rel="stylesheet" type="text/css" href="styles/styles.css">
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
+
+  <link href='http://fonts.googleapis.com/css?family=Dosis:200,300,400,500,600,700,800' rel='stylesheet' type='text/css'>
+
+  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="scripts/jquery.js"></script>
+</head>
+<body>
+
+  <section class="landing-container">
+    <div id="centering">
+      <h1>Words game</h1>
+      <button class="start-button">Start</button>
+    </div>
+  </section>
+
+  <section class="finish">
+    <div id="centering">
+      <p></p>
+      <button class="start-button">Play again</button>
+    </div>
+  </section>
+
+<div class="container">
+
+  <header>
+    <h2>Compose words from letters presented in the table</h2>
+    <div id="timer">
+      time here
+    </div>
+  </header>
+
+  <section id="words-field">
+    <ul>
+      <li class="letter_1"></li>
+      <li class="letter_2"></li>
+      <li class="letter_3"></li>
+      <li class="letter_4"></li>
+      <li class="letter_5"></li>
+      <li class="letter_6"></li>
+      <li class="letter_7"></li>
+      <li class="letter_8"></li>
+      <li class="letter_9"></li>
+      <li class="letter_10"></li>
+      <li class="letter_11"></li>
+      <li class="letter_12"></li>
+      <li class="letter_13"></li>
+      <li class="letter_14"></li>
+      <li class="letter_15"></li>
+      <li class="letter_16"></li>
+    </ul>
+  </section>
+
+  <!-- game panel section -->
+  <section class="game-panel">
+    <!-- current-word -->
+    <div class="current-word">
+      <h3>Current word</h3>
+      <div class="mark"></div>
+      <div id="word-field">
+
+      </div>
+      <div class="buttons">
+        <button id="clear">Clear</button>
+        <button id="check">Check</button>
+      </div>
+    </div>
+
+    <!-- found words -->
+    <div class="found-words">
+      <div class="total-container">
+        <h3>Found Words</h3>
+        <div id="total">
+          Total: <span class="points">0 pts</span>
+        </div>
+      </div>
+      <ul class="words-list">
+        <li>
+          <p>Heartstone</p>
+          <span>10 pts</span>
+        </li>
+        <li>
+          <p>Lamp</p>
+          <span>5 pts</span>
+        </li>
+        <li>
+          <p>Storm</p>
+          <span>5 pts</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <audio id="audiotag1" src="sounds/Tick.mp3" preload="auto"></audio>
+  <audio id="same-letter" src="sounds/Same-letter.mp3" preload="auto"></audio>
+  <audio id="fail" src="sounds/fail.mp3" preload="auto"></audio>
+  <audio id="correct" src="sounds/correct.mp3" preload="auto"></audio>
+
+</div>
+
+</body>
+</html>
