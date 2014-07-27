@@ -1,10 +1,14 @@
-/*------Landing Page-----*/
+/*------Landing Container-----*/
 .landing-container {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 100;
   background-image: -webkit-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -moz-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -ms-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -o-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
   background-size: cover;
 }
 
@@ -35,11 +39,10 @@
   border: 3px solid #fff;
   padding: 15px;
   font-size: 2.3em;
-
 }
 
 
-/*------Main Page------*/
+/*------Main Container------*/
 html {
   height: 100%;
 }
@@ -52,6 +55,10 @@ html {
 
 body {
   background-image: -webkit-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -moz-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -ms-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -o-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
   background-size: cover;
   font-family: 'Dosis', sans-serif;
   font-size: 16px;
@@ -115,7 +122,6 @@ section#words-field {
   color: #E6FF99;
   float: left;
   cursor: pointer;
-
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
 }
@@ -139,7 +145,6 @@ section#words-field {
 
 .current-word {
   overflow: hidden;
-
 }
 
 .current-word h3 {
@@ -163,7 +168,6 @@ section#words-field {
   line-height: 45px;
   height: 45px;
   border-bottom: 1px solid #ccc;
-
 }
 
 .buttons {
@@ -242,7 +246,7 @@ section#words-field {
 
 
 /*   Game styles    */
-.active-letter {
+.is-active {
   background-color: rgba(256,256,256,.3);
 }
 
@@ -256,6 +260,10 @@ section#words-field {
   background-size: 20px 20px;
 }
 
+.is-existed {
+  background-color: rgba(256,256,256,.5);
+}
+
 
 /*end of game*/
 .finish {
@@ -264,6 +272,10 @@ section#words-field {
   width: 100%;
   height: 100%;
   z-index: 100;
-  background-image: -webkit-radial-gradient(circle, rgba(51, 51, 51, 0.85) 0%, rgba(0,0,0,.95) 100%), url(../images/1024-768.jpg);
+  background-image: -webkit-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -moz-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -ms-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -o-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
   background-size: cover;
 }
