@@ -13,33 +13,29 @@ $(document).ready(function() {
 
 
   function createCurrentLibrary() {
-    for(var i = 0; i<16; i++) {
+    for(var i = 0; i < 16; i++) {
       var currentLetter = generalLibrary[Math.floor(Math.random()*generalLibrary.length)];
       currentLibrary.push(currentLetter);
     }
-    console.log(currentLibrary);
     checkCurrentLibrary();
-  }
+  } //end of createCurrentLibrary
 
   function checkCurrentLibrary() {
     var numberOfVowels = 0;
-    for (var i = 0; i<currentLibrary.length; i++) { 
-      if(currentLibrary[i] === "a"||currentLibrary[i] === "o"||currentLibrary[i] === "e"||currentLibrary[i] === "i"||currentLibrary[i] === "u") {
+    for (var i = 0; i < currentLibrary.length; i++) { 
+      if(currentLibrary[i] === "a" || currentLibrary[i] === "o" || currentLibrary[i] === "e" || currentLibrary[i] === "i" || currentLibrary[i] === "u") {
         numberOfVowels++;
       }
     }
-    console.log(numberOfVowels);
     if(numberOfVowels < 2 || numberOfVowels > 5) {
-      console.log("Restricted number of vowels!");
       currentLibrary = [];
       createCurrentLibrary();
     }  
   } //end of checkCurrentLibrary (check how many vowels we have)
 
   function createNewGame() {
-    timerID = setInterval(makeTimer, 1000); //set interval
-    createCurrentLibrary();
-    
+    timerID = setInterval(setTimer, 1000); //set interval
+    createCurrentLibrary();  
   } //end of createNewGame
 
   function resetOldGame() {
@@ -71,47 +67,52 @@ $(document).ready(function() {
       myCurrentWord = myCurrentWord + currentLetter
     }
     $('#word-field').text(myCurrentWord);
-    console.log(myCurrentWord);
   } //end of createWord
 
+  function styleUsedWord() {
+    $("p:contains('" + myCurrentWord + "')").addClass('is-existed');
+    $('ul').animate({scrollTop: $(".is-existed").height()}, 'slow');
+    clearField();
+  } // end of styleUsedWord
+
+  function addNewWord() {
+    myListOfWords.push(myCurrentWord);
+    $('.mark').addClass('win-mark');
+    document.getElementById('correct').play();
+    setInterval(function(){
+      $(".mark").removeClass('win-mark');
+    }, 500);
+    // let's send this to board and count points
+    getPoints();
+    $(".words-list").append("<li><p>" + myCurrentWord +"</p><span>" + currentPoint + "</span></li>").animate({scrollTop: $("ul").height()}, 'slow');
+    clearField();
+  }
+
   function checkWord() {
-    if(myCurrentWord.length > 2) {
-      $.getJSON('http://glosbe.com/gapi/translate?from=eng&dest=eng&format=json&phrase=' + myCurrentWord + '&pretty=true&callback=?', 
-      function(data) {
-        console.log(data);
-        if (data.tuc) {
-          //if we already used this word
-          for (var i = 0; i < myListOfWords.length; i++) {
-            if (myCurrentWord === myListOfWords[i]) {
-              $("p:contains('" + myCurrentWord + "')").addClass('is-existed');
-              clearField();
-              return;
-            }
-          } //end of for
-          //if word is new
-         
-          myListOfWords.push(myCurrentWord);
-          console.log(myListOfWords);
-          $('.mark').addClass('win-mark');
-          document.getElementById('correct').play();
-          setInterval(function(){
-            $(".mark").removeClass('win-mark');
-          }, 500);
-          // let's send this to board and count points
-          getPoints();
-          $(".words-list").append("<li><p>" + myCurrentWord +"</p><span>" + currentPoint + "</span></li>");
-          clearField();
-        }
-        else {
-          $('.mark').addClass('fail-mark');
-          document.getElementById('fail').play();
-          setInterval(function(){
-            $(".mark").removeClass('fail-mark');
-          }, 500);
-          clearField();
+    if (myCurrentWord.length < 2) {
+      return;
+    }
+    $.getJSON('http://glosbe.com/gapi/translate?from=eng&dest=eng&format=json&phrase=' + myCurrentWord + '&pretty=true&callback=?', 
+    function(data) {
+      if (data.tuc) {
+        //if we already used this word
+        for (var i = 0; i < myListOfWords.length; i++) {
+          if (myCurrentWord === myListOfWords[i]) {
+            styleUsedWord();
+            return;
+          }
+        } //end of for
+        addNewWord();
+      }
+      else {
+        $('.mark').addClass('fail-mark');
+        document.getElementById('fail').play();
+        setInterval(function(){
+          $(".mark").removeClass('fail-mark');
+        }, 500);
+        clearField();
         }
       });
-    }
   } //end of checkWord 
 
   function getPoints() {
@@ -159,10 +160,10 @@ $(document).ready(function() {
   $("#clear").on('click', clearField);
 
   //6. Set timer
-  function makeTimer() {
+  function setTimer() {
     seconds--;
     if (minutes === 0 && seconds === 0) {
-      myStopFunction();
+      stopTimer();
       showEnd();
       minutes = 3;
       seconds = "00";
@@ -178,7 +179,7 @@ $(document).ready(function() {
      seconds = parseInt(seconds);
   }
 
-  function myStopFunction() {
+  function stopTimer() {
     clearInterval(timerID);
 }
 
