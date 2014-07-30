@@ -1,165 +1,200 @@
 $(document).ready(function() {
 
   //1. Create general variables and sent here general functions
-  var generalLibrary = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","r","s","t","u","v","w","x","y","z"];
-  var currentLibrary = [];
-  var myCurrentWord = "";
-  var myListOfWords = [];
-  var myPoints = 0;
-  var currentPoint = 0;
-  var timerID;
-  var minutes;
-  var seconds;
-
-
-  function createCurrentLibrary() {
-    for(var i = 0; i < 16; i++) {
-      var currentLetter = generalLibrary[Math.floor(Math.random()*generalLibrary.length)];
-      currentLibrary.push(currentLetter);
-    }
-    checkCurrentLibrary();
-  } //end of createCurrentLibrary
-
-  function checkCurrentLibrary() {
-    var numberOfVowels = 0;
-    for (var i = 0; i < currentLibrary.length; i++) { 
-      if(currentLibrary[i] === "a" || currentLibrary[i] === "o" || currentLibrary[i] === "e" || currentLibrary[i] === "i" || currentLibrary[i] === "u") {
-        numberOfVowels++;
-      }
-    }
-    if(numberOfVowels < 2 || numberOfVowels > 5) {
-      currentLibrary = [];
-      createCurrentLibrary();
-    }  
-  } //end of checkCurrentLibrary (check how many vowels we have)
-
-  function createNewGame() {
-    timerID = setInterval(setTimer, 1000); //set interval
-    createCurrentLibrary();  
-  } //end of createNewGame
-
-  function resetOldGame() {
-    minutes = 3;
-    seconds = 00;
-    currentLibrary = [];
-    myListOfWords = [];
-    myCurrentWord = "";
-    myPoints = 0;
-    currentPoint = 0;
-    $("li").removeClass("is-active");
-    $(".points").text("");
-    $("#word-field").text("");
-    $(".words-list").empty();
-    myCurrentWord = "";
-  } //end of resetOldGame
-
-  function createWord() {
-     $("p").removeClass('is-existed');  //in case previous word was repeated
-    document.getElementById('audiotag1').play();  //play sound
-    var currentLetter = $(this).text();
-    if($(this).hasClass("is-active") === true) {
-      document.getElementById('same-letter').play();
-      $(this).removeClass("is-active");
-      myCurrentWord = myCurrentWord.replace(currentLetter, '');
-    }
-    else {
-      $(this).addClass("is-active");
-      myCurrentWord = myCurrentWord + currentLetter
-    }
-    $('#word-field').text(myCurrentWord);
-  } //end of createWord
-
-  function styleUsedWord() {
-    $("p:contains('" + myCurrentWord + "')").addClass('is-existed');
-    $('ul').animate({scrollTop: $(".is-existed").height()}, 'slow');
-    clearField();
-  } // end of styleUsedWord
-
-  function addNewWord() {
-    myListOfWords.push(myCurrentWord);
-    $('.mark').addClass('win-mark');
-    document.getElementById('correct').play();
-    setInterval(function(){
-      $(".mark").removeClass('win-mark');
-    }, 500);
-    // let's send this to board and count points
-    getPoints();
-    $(".words-list").append("<li><p>" + myCurrentWord +"</p><span>" + currentPoint + "</span></li>").animate({scrollTop: $("ul").height()}, 'slow');
-    clearField();
-  }
-
-  function checkWord() {
-    if (myCurrentWord.length < 2) {
-      return;
-    }
-    $.getJSON('http://glosbe.com/gapi/translate?from=eng&dest=eng&format=json&phrase=' + myCurrentWord + '&pretty=true&callback=?', 
-    function(data) {
-      if (data.tuc) {
-        //if we already used this word
-        for (var i = 0; i < myListOfWords.length; i++) {
-          if (myCurrentWord === myListOfWords[i]) {
-            styleUsedWord();
-            return;
-          }
-        } //end of for
-        addNewWord();
-      }
-      else {
-        $('.mark').addClass('fail-mark');
-        document.getElementById('fail').play();
-        setInterval(function(){
-          $(".mark").removeClass('fail-mark');
-        }, 500);
-        clearField();
-        }
-      });
-  } //end of checkWord 
-
-  function getPoints() {
-    if(myCurrentWord.length === 3) {
-      currentPoint = 2;
-    }
-    else if (myCurrentWord.length === 4) {
-      currentPoint = 3;
-    }
-    else if (myCurrentWord.length === 5) {
-      currentPoint = 4;
-    }
-    else {
-      currentPoint = 5;
-    }
-    myPoints = myPoints + currentPoint;
-     $(".points").text(myPoints + " pts");
-  } //end of getPoints
-
-  function clearField() {
-    myCurrentWord = "";
-    $("li").removeClass("is-active");
-    $('#word-field').text("");
-  } // end of clearField
+  var word = "";
+  var gameTimer;
+  var usedWords = [];
+  var generalPoint = 0;
 
   //2. Click "start" and make random library
-  $(".start-button").on("click", function() {
-    $(".finish").hide();
-    $(".landing-container").hide(); 
-    resetOldGame();
-    createNewGame();
-    // fill html with this letters
-    currentLibrary.forEach(function(letter, index) {
-      $(".letter_" + (index + 1)).html(letter);
-    });
-  });
+  $(".start-button").on("click", startGame);
 
   //3. Create new word by clicking on letters
-  $("#words-field li").on('click', createWord);
+  $("#words-field li").on('click', verifyLetter);
 
   //4. Check if we have this word
-  $("#check").on('click', checkWord);
+  $("#check").on('click', verifyWordforExistence);
 
   //5. Clear field on click
   $("#clear").on('click', clearField);
 
+  function startGame() {
+    $(".finish").hide();
+    $(".landing-container").hide();
+
+    resetOldGame();
+    createNewGame();
+  }
+
+  function resetOldGame() {
+    minutes = 3;
+    seconds = 00;
+    usedWords = [];
+    word = "";
+
+    $("li").removeClass("is-active");
+    $(".points").text("");
+    $("#word-field").text("");
+    $(".words-list").empty();
+  } //end of resetOldGame
+
+  function createNewGame() {
+    gameTimer = setInterval(setTimer, 1000);
+    createRandomLetters();  
+  } //end of createNewGame
+
+  function createRandomLetters() {
+    var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","r","s","t","u","v","w","x","y","z"];
+    var currentLibrary = [];
+    for(var i = 0; i < 16; i++) {
+      var currentLetter = alphabet[Math.floor(Math.random()*alphabet.length)];
+      currentLibrary.push(currentLetter);
+    }
+    checkLetters(currentLibrary);  
+  } //end of createRandomLetters
+
+  function checkLetters(array) {
+    var numberOfVowels = 0;
+    for (var i = 0; i < array.length; i++) { 
+      if(array[i] === "a" 
+        || array[i] === "o" 
+        || array[i] === "e" 
+        || array[i] === "i" 
+        || array[i] === "u") {
+        numberOfVowels++;
+      }
+    }
+    if(numberOfVowels < 2 || numberOfVowels > 5) {
+      createRandomLetters();
+    }  
+    else {
+      showLetters(array);
+    } 
+  } //end of checkLetters (check how many vowels we have)
+
+  function showLetters(array) {
+    array.forEach(function(letter, index) {
+      $(".letter_" + (index + 1)).html(letter);
+    });
+  }  //end of showLetters
+
+  function verifyLetter() {
+    var letter = $(this).text();
+    if($(this).hasClass("is-active") != true) {
+      addLetter(letter, true);
+      $('#audiotag1')[0].play();
+    }
+    else {
+      addLetter(letter, false);
+      $('#same-letter')[0].play();  
+    }
+    $(this).toggleClass('is-active');
+  } //end od verifyLetter
+
+  function addLetter(letter, value) {
+    if (value === true) {
+      word = word + letter;
+    }
+    else {
+      word = word.replace(letter, '');
+    }
+    $("#word-field").text(word);
+  } //end of create word
+
+  function verifyWordforExistence() {
+    $("p").removeClass("is-existed");
+    if (word.length < 2) {
+      return;
+    }
+    $.getJSON('http://glosbe.com/gapi/translate?from=eng&dest=eng&format=json&phrase=' + word + '&pretty=true&callback=?', 
+    function(data) {
+      if (data.tuc) {
+        verifyWordForUsing();
+      }
+      else {
+        $('.mark').addClass('fail-mark');
+        $('#fail')[0].play();
+        setInterval(function(){
+          $(".mark").removeClass('fail-mark');
+        }, 500);
+        clearField();
+        word = "";
+      }
+    });
+    console.log(word);
+  } //end of verifyWordforExistence
+
+  function verifyWordForUsing() {
+    if(usedWords.length > 0) {
+      for (var i = 0; i < usedWords.length; i++) {
+        if(usedWords[i] === word) {
+          console.log("Not");
+          markUsedWord();
+          return;
+        }
+      }
+      acceptWord();
+    }
+    else {
+      acceptWord();
+    }
+  } // end of verifyWordForUsing
+
+  function acceptWord() {
+    usedWords.push(word);
+    console.log("Word accepted!");
+    addToList();
+  }
+
+  function markUsedWord() {
+    console.log("I was used");
+    $("p:contains('" + word + "')").addClass('is-existed');
+    $('ul').animate({scrollTop: $(".is-existed").height()}, 'slow');
+    clearField();
+    word = "";
+  } // end of markUsedWord
+
+  function addToList() {
+    console.log("i'm in add to list");
+      $('#correct')[0].play();
+      var point = getPoint();
+      $(".words-list").append("<li><p>" + word +"</p><span>" + point + "</span></li>").animate({scrollTop: $("ul").height()}, 'slow');
+      setTimer(function(){
+        $(".mark").removeClass('win-mark');
+      }, 500);
+      clearField();
+      word = "";
+  }  //end of addToList
+
+  var getPoint = function() {
+    console.log("I count points");
+    var point;
+    if (word.length === 3) {
+      point = 2;
+    }
+    else if (word.length === 4) {
+      point = 3;
+    }
+    else if (word.length === 5) {
+      point = 4;
+    }
+    else {
+      point = 5;
+    }
+    generalPoint = generalPoint + point;
+    console.log(generalPoint);
+    $(".points").text(generalPoint + " pts");
+    return point;
+  }
+
+  function clearField() {
+    word = "";
+    $("li").removeClass("is-active");
+    $('#word-field').text("");
+  } // end of clearField
+
   //6. Set timer
+ 
   function setTimer() {
     seconds--;
     if (minutes === 0 && seconds === 0) {
@@ -177,16 +212,16 @@ $(document).ready(function() {
      }
      $("#timer").text(minutes + " : " + seconds);
      seconds = parseInt(seconds);
-  }
+  } // end of setTimer
 
   function stopTimer() {
-    clearInterval(timerID);
-}
+    clearInterval(gameTimer);
+} // end of stopTimer
 
   function showEnd() {
     $(".finish").show();
-    $(".finish").find("p").html("You got " + myPoints + " points!");
-  }
+    $(".finish").find("p").html("You got " + generalPoint + " points!");
+  } // end of showEnd
   
 
 
