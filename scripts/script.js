@@ -10,10 +10,10 @@ $(document).ready(function() {
   $(".start-button").on("click", startGame);
 
   //3. Create new word by clicking on letters
-  $("#words-field li").on('click', verifyLetter);
+  $("#words-field li").on('click', checkLetter);
 
   //4. Check if we have this word
-  $("#check").on('click', verifyWordforExistence);
+  $("#check").on('click', verifyWordForExistenceAndPreviousUsing);
 
   //5. Clear field on click
   $("#clear").on('click', clearField);
@@ -31,6 +31,7 @@ $(document).ready(function() {
     seconds = 00;
     usedWords = [];
     word = "";
+    generalPoint = 0;
 
     $("li").removeClass("is-active");
     $(".points").text("");
@@ -40,7 +41,13 @@ $(document).ready(function() {
 
   function createNewGame() {
     gameTimer = setInterval(setTimer, 1000);
-    createRandomLetters();  
+
+    do {
+      var arrayOfLetters = createRandomLetters();
+      var numberOfVowels = checkLetters(arrayOfLetters);
+    } while (numberOfVowels < 2 || numberOfVowels > 5);
+
+    showLetters(arrayOfLetters);
   } //end of createNewGame
 
   function createRandomLetters() {
@@ -50,7 +57,7 @@ $(document).ready(function() {
       var currentLetter = alphabet[Math.floor(Math.random()*alphabet.length)];
       currentLibrary.push(currentLetter);
     }
-    checkLetters(currentLibrary);  
+    return currentLibrary;
   } //end of createRandomLetters
 
   function checkLetters(array) {
@@ -64,13 +71,8 @@ $(document).ready(function() {
         numberOfVowels++;
       }
     }
-    if(numberOfVowels < 2 || numberOfVowels > 5) {
-      createRandomLetters();
-    }  
-    else {
-      showLetters(array);
-    } 
-  } //end of checkLetters (check how many vowels we have)
+    return numberOfVowels;
+  } //end of checkLetters
 
   function showLetters(array) {
     array.forEach(function(letter, index) {
@@ -78,20 +80,21 @@ $(document).ready(function() {
     });
   }  //end of showLetters
 
-  function verifyLetter() {
+  function checkLetter() {
     var letter = $(this).text();
+
     if($(this).hasClass("is-active") != true) {
-      addLetter(letter, true);
       $('#audiotag1')[0].play();
+      appointCheckedLetter(letter, true); 
     }
     else {
-      addLetter(letter, false);
-      $('#same-letter')[0].play();  
+      $('#same-letter')[0].play();
+      appointCheckedLetter(letter, false);  
     }
     $(this).toggleClass('is-active');
-  } //end od verifyLetter
+  } //end of checkLetter
 
-  function addLetter(letter, value) {
+  function appointCheckedLetter(letter, value) {
     if (value === true) {
       word = word + letter;
     }
@@ -101,7 +104,7 @@ $(document).ready(function() {
     $("#word-field").text(word);
   } //end of create word
 
-  function verifyWordforExistence() {
+  function verifyWordForExistenceAndPreviousUsing() {
     $("p").removeClass("is-existed");
     if (word.length < 2) {
       return;
@@ -109,65 +112,56 @@ $(document).ready(function() {
     $.getJSON('http://glosbe.com/gapi/translate?from=eng&dest=eng&format=json&phrase=' + word + '&pretty=true&callback=?', 
     function(data) {
       if (data.tuc) {
-        verifyWordForUsing();
+        var newWord = verifyExistedWordForUsing();
+        if(newWord === true) {
+          addToListAndGetPoints();
+        }
       }
       else {
-        $('.mark').addClass('fail-mark');
-        $('#fail')[0].play();
-        setInterval(function(){
-          $(".mark").removeClass('fail-mark');
-        }, 500);
-        clearField();
-        word = "";
+        markWordAsNotExisted(); 
       }
     });
-    console.log(word);
-  } //end of verifyWordforExistence
+  } //end of verifyWordForExistenceAndPreviousUsing
 
-  function verifyWordForUsing() {
+  function verifyExistedWordForUsing() {
     if(usedWords.length > 0) {
       for (var i = 0; i < usedWords.length; i++) {
         if(usedWords[i] === word) {
-          console.log("Not");
-          markUsedWord();
+          markWordAsAlreadyUsed();
           return;
         }
       }
-      acceptWord();
     }
-    else {
-      acceptWord();
-    }
-  } // end of verifyWordForUsing
+    return true;
+  } // end of verifyExistedWordForUsing
 
-  function acceptWord() {
-    usedWords.push(word);
-    console.log("Word accepted!");
-    addToList();
-  }
+  function markWordAsNotExisted() {
+    $('.mark').addClass('fail-mark');
+    $('#fail')[0].play();
+    setTimeout(function(){
+      $(".mark").removeClass('fail-mark');
+      clearField();
+    }, 600);
+  } // end of markWordAsNotExisted
 
-  function markUsedWord() {
-    console.log("I was used");
+  function markWordAsAlreadyUsed() {
     $("p:contains('" + word + "')").addClass('is-existed');
     $('ul').animate({scrollTop: $(".is-existed").height()}, 'slow');
     clearField();
-    word = "";
-  } // end of markUsedWord
+  } // end of markWordAsAlreadyUsed
 
-  function addToList() {
-    console.log("i'm in add to list");
-      $('#correct')[0].play();
-      var point = getPoint();
-      $(".words-list").append("<li><p>" + word +"</p><span>" + point + "</span></li>").animate({scrollTop: $("ul").height()}, 'slow');
-      setTimer(function(){
-        $(".mark").removeClass('win-mark');
-      }, 500);
+  function addToListAndGetPoints() {
+    usedWords.push(word);
+    $('#correct')[0].play();
+    var point = getPoints();
+    $(".words-list").append("<li><p>" + word +"</p><span>" + point + "</span></li>").animate({scrollTop: $("ul").height()}, 'slow');
+    setTimeout(function(){
+      $(".mark").removeClass('win-mark');
       clearField();
-      word = "";
-  }  //end of addToList
+    }, 600);
+  } // end of addToListAndGetPoints
 
-  var getPoint = function() {
-    console.log("I count points");
+  function getPoints() {
     var point;
     if (word.length === 3) {
       point = 2;
@@ -182,10 +176,9 @@ $(document).ready(function() {
       point = 5;
     }
     generalPoint = generalPoint + point;
-    console.log(generalPoint);
     $(".points").text(generalPoint + " pts");
     return point;
-  }
+  } // end of getPoints;
 
   function clearField() {
     word = "";
@@ -194,7 +187,8 @@ $(document).ready(function() {
   } // end of clearField
 
   //6. Set timer
- 
+  var minutes = 3;
+  var seconds = 0;
   function setTimer() {
     seconds--;
     if (minutes === 0 && seconds === 0) {
@@ -216,13 +210,10 @@ $(document).ready(function() {
 
   function stopTimer() {
     clearInterval(gameTimer);
-} // end of stopTimer
+  } // end of stopTimer
 
   function showEnd() {
     $(".finish").show();
     $(".finish").find("p").html("You got " + generalPoint + " points!");
   } // end of showEnd
-  
-
-
 }); //end of ready
