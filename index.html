@@ -11,86 +11,89 @@
   <script src="scripts/script.js"></script>
 </head>
 <body>
+  <div class="body-container">
 
-  <section class="landing-container">
-    <div id="centering">
-      <h1>Words game</h1>
-      <button class="start-button">Start</button>
-    </div>
-  </section>
-
-  <section class="finish">
-    <div id="centering">
-      <p></p>
-      <button class="start-button">Play again</button>
-    </div>
-  </section>
-
-<div class="container">
-
-  <header>
-    <h2>Compose words from letters presented in the table</h2>
-    <div id="timer">
-      3:00
-    </div>
-  </header>
-
-  <section id="words-field">
-    <ul>
-      <li class="letter_1"></li>
-      <li class="letter_2"></li>
-      <li class="letter_3"></li>
-      <li class="letter_4"></li>
-      <li class="letter_5"></li>
-      <li class="letter_6"></li>
-      <li class="letter_7"></li>
-      <li class="letter_8"></li>
-      <li class="letter_9"></li>
-      <li class="letter_10"></li>
-      <li class="letter_11"></li>
-      <li class="letter_12"></li>
-      <li class="letter_13"></li>
-      <li class="letter_14"></li>
-      <li class="letter_15"></li>
-      <li class="letter_16"></li>
-    </ul>
-  </section>
-
-  <!-- game panel section -->
-  <section class="game-panel">
-    <!-- current-word -->
-    <div class="current-word">
-      <h3>Current word</h3>
-      <div class="mark"></div>
-      <div id="word-field">
-
+  <!-- section for landing "page" -->
+    <section class="landing-container">
+      <div id="centering">
+        <h1>Words game</h1>
+        <button class="start-button">Start</button>
       </div>
-      <div class="buttons">
-        <button id="clear">Clear</button>
-        <button id="check">Check</button>
-      </div>
-    </div>
+    </section>
 
-    <!-- found words -->
-    <div class="found-words">
-      <div class="total-container">
-        <h3>Found Words</h3>
-        <div id="total">
-          Total: <span class="points">0 pts</span>
+    <!-- section for the end of the game -->
+    <section class="finish">
+      <div id="centering">
+        <p></p>
+        <button class="start-button">Play again</button>
+      </div>
+    </section>
+
+    <!-- main container -->
+    <div class="container">
+      <header>
+        <h2>Compose words from letters presented in the table</h2>
+        <div id="timer">
+          <ul>
+            <li class='minutes'>3</li>
+            <li>:</li>
+            <li class='seconds-first-digit'>0</li>
+            <li class='seconds-second-digit'>0</li>
+          </ul>
         </div>
-      </div>
-      <ul class="words-list">
-        
-      </ul>
-    </div>
-  </section>
+      </header>
 
+      <!-- section for random letters -->
+      <section id="words-field">
+        <ul>
+          <li class="letter_1"></li>
+          <li class="letter_2"></li>
+          <li class="letter_3"></li>
+          <li class="letter_4"></li>
+          <li class="letter_5"></li>
+          <li class="letter_6"></li>
+          <li class="letter_7"></li>
+          <li class="letter_8"></li>
+          <li class="letter_9"></li>
+          <li class="letter_10"></li>
+          <li class="letter_11"></li>
+          <li class="letter_12"></li>
+          <li class="letter_13"></li>
+          <li class="letter_14"></li>
+          <li class="letter_15"></li>
+          <li class="letter_16"></li>
+        </ul>
+      </section>
+
+      <!-- game field, points and used words -->
+      <section class="game-panel">
+        <!-- field for current word -->
+        <div class="current-word">
+          <h3>Current word</h3>
+          <div class="mark"></div>
+          <div id="word-field"></div>
+          <div class="buttons">
+            <button id="clear">Clear</button>
+            <button id="check">Check</button>
+          </div>
+        </div>
+        <!-- list od found words and earned points -->
+        <div class="found-words">
+          <div class="total-container">
+            <h3>Found Words</h3>
+            <div id="total">
+              <p>Total: <span class="points">0 pts</span></p>
+            </div>
+          </div>
+          <ul class="words-list"></ul>
+        </div>
+      </section>
+    </div> <!-- end of container -->
+  </div> <!-- end of body-container -->
   <audio id="audiotag1" src="sounds/Tick.mp3" preload="auto"></audio>
   <audio id="same-letter" src="sounds/Same-letter.mp3" preload="auto"></audio>
   <audio id="fail" src="sounds/fail.mp3" preload="auto"></audio>
   <audio id="correct" src="sounds/correct.mp3" preload="auto"></audio>
-
-</div>
 
 </body>
 </html>
