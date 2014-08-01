@@ -5,6 +5,8 @@ $(document).ready(function() {
   var gameTimer;
   var usedWords = [];
   var generalPoint = 0;
+  var minutes = 3;
+  var seconds = 0;
 
   //2. Click "start" and make random library
   $(".start-button").on("click", startGame);
@@ -21,6 +23,8 @@ $(document).ready(function() {
   function startGame() {
     $(".finish").hide();
     $(".landing-container").hide();
+    $(".found-words").removeClass('fade-in');
+    $(".found-words").addClass('fade-out');
 
     resetOldGame();
     createNewGame();
@@ -112,7 +116,7 @@ $(document).ready(function() {
     $.getJSON('http://glosbe.com/gapi/translate?from=eng&dest=eng&format=json&phrase=' + word + '&pretty=true&callback=?', 
     function(data) {
       if (data.tuc) {
-        var newWord = verifyExistedWordForUsing();
+        var newWord = checkExistedWordForPreviousUsage();
         if(newWord === true) {
           addToListAndGetPoints();
         }
@@ -123,7 +127,7 @@ $(document).ready(function() {
     });
   } //end of verifyWordForExistenceAndPreviousUsing
 
-  function verifyExistedWordForUsing() {
+  function checkExistedWordForPreviousUsage() {
     if(usedWords.length > 0) {
       for (var i = 0; i < usedWords.length; i++) {
         if(usedWords[i] === word) {
@@ -133,7 +137,7 @@ $(document).ready(function() {
       }
     }
     return true;
-  } // end of verifyExistedWordForUsing
+  } // end of checkExistedWordForPreviousUsage
 
   function markWordAsNotExisted() {
     $('.mark').addClass('fail-mark');
@@ -151,6 +155,8 @@ $(document).ready(function() {
   } // end of markWordAsAlreadyUsed
 
   function addToListAndGetPoints() {
+    $(".found-words").removeClass('').addClass('fade-in');
+    $(".mark").addClass('win-mark');
     usedWords.push(word);
     $('#correct')[0].play();
     var point = getPoints();
@@ -187,8 +193,6 @@ $(document).ready(function() {
   } // end of clearField
 
   //6. Set timer
-  var minutes = 3;
-  var seconds = 0;
   function setTimer() {
     seconds--;
     if (minutes === 0 && seconds === 0) {
@@ -204,9 +208,18 @@ $(document).ready(function() {
       minutes--;
       seconds = 59;
      }
-     $("#timer").text(minutes + " : " + seconds);
+     
+     var secondsArray = seconds.toString().split('');
+     changeTimeOnScreen(minutes, secondsArray);
+
      seconds = parseInt(seconds);
   } // end of setTimer
+
+  function changeTimeOnScreen(min, secArray) {
+    $("li.minutes").text(min);
+    $("li.seconds-first-digit").text(secArray[0]);
+    $("li.seconds-second-digit").text(secArray[1]);
+  } // end of changeTimeOnScreen
 
   function stopTimer() {
     clearInterval(gameTimer);
