@@ -24,23 +24,25 @@
   color: #fff; 
   font-weight: 400;
   font-size: 2.6em;
+  word-spacing: 20px;
 }
 
 #centering button {
-  background-color: transparent;
-  outline: none;
-  cursor: pointer;
+  width: 100%;
   display: block;
-  font-family: 'Dosis', sans-serif;
   margin: 0 auto;
   margin-top: 50px;
-  color: #fff;
+  padding: 25px 0;
   border-radius: 15px;
   border: 3px solid #fff;
-  padding: 15px;
+  font-family: 'Dosis', sans-serif;
+  color: #fff;  
   font-size: 2.3em;
+  /*outline: none;*/
+  cursor: pointer;
+  text-transform: uppercase;
+  background-color: transparent;
 }
-
 
 /*------Main Container------*/
 html {
@@ -54,20 +56,27 @@ html {
 }
 
 body {
-  background-image: -webkit-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
-  background-image: -moz-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
-  background-image: -ms-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
-  background-image: -o-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
-  background-image: radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
-  background-size: cover;
+  height: 100%;
   font-family: 'Dosis', sans-serif;
   font-size: 16px;
   color: #ccc;
   font-weight: 300;
 }
 
-h1,h2,h3,h4,h5,h6 {
+h1,h2,h3 {
   font-weight: 300;
+}
+
+.body-container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-image: -webkit-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -moz-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -ms-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: -o-radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-image: radial-gradient(circle, rgba(51, 51, 51, 0.7) 0%, rgba(0,0,0,.9) 100%), url(../images/1024-768.jpg);
+  background-size: cover;
 }
 
 .container {
@@ -75,35 +84,42 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 header {
-  height: 40px;
+  height: 50px;
   border-bottom: 3px solid #C0FF00;
   padding-bottom: 5px;
   box-sizing: content-box;
 }
 
 header h2 {
-  font-size: 1.5em;
   float: left;
   width: 70%;
+  padding-top: 20px; 
+  font-size: 1.5em;
 }
 
 #timer {
   float: right;
+  height: 40px;
+  padding-left: 50px;
   text-align: right;
   background: url(../images/clock.png) no-repeat left center;
-  height: 40px;
   background-size: contain;
-  padding-left: 50px;
   line-height: 40px;
   font-size: 1.8em;
 }
 
+#timer ul li {
+  width: 10px;
+  display: inline-block;
+  text-align: center;
+}
+
 section#words-field {
+  width: 50%;
+  float: left;
   margin-top: 50px;
   margin-left: 30px;
   overflow: hidden;
-  width: 50%;
-  float: left;
 }
 
 #words-field ul {
@@ -112,18 +128,18 @@ section#words-field {
 }
 
 #words-field li {
-  list-style: none;
-  text-align: center;
-  padding-top: 10px;
-  font-size: 3.75em;
-  text-transform: uppercase;
   height: 100px;
   width: 100px;
-  color: #E6FF99;
   float: left;
-  cursor: pointer;
+  padding-top: 10px;
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+  list-style: none;
+  cursor: pointer;
+  color: #E6FF99;
+  text-align: center;
+  font-size: 3.75em;
+  text-transform: uppercase; 
 }
 
 #words-field li:nth-child(4n+4) {
@@ -134,13 +150,12 @@ section#words-field {
   border-bottom: none;
 }
 
-
 /*-----game-panel-section-----*/
 .game-panel {
-  margin-top: 50px;
-  overflow: hidden;
   width: 45%;
   float: left;
+  margin-top: 50px;
+  overflow: hidden;
 }
 
 .current-word {
@@ -148,8 +163,8 @@ section#words-field {
 }
 
 .current-word h3 {
-  font-size: 1.5em;
   padding: 0 30px;
+  font-size: 1.5em;
 }
 
 .mark {
@@ -159,79 +174,98 @@ section#words-field {
 }
 
 #word-field {
-  text-transform: uppercase;
-  font-size: 2.25em;
-  color: #C0FF00;
-  font-weight: 400;
-  width: 55%;
-  float: left;
-  line-height: 45px;
+  width: 60%;
   height: 45px;
+  float: left;
   border-bottom: 1px solid #ccc;
+  line-height: 45px;
+  color: #C0FF00;
+  font-size: 2.25em;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .buttons {
   float: right;
-  text-align: right;
   margin-right: 30px;
+  text-align: center;
 }
 
 .buttons button {
-  font: inherit;
-  padding: 10px 19px;
+  padding: 10px 15px;
   border: 1px solid #ccc;
   border-radius: 9px;
   background-color: transparent;
-  outline: none;
-  font-size: 1.1em;
+  font: inherit;
+  /*outline: none;*/
   color: #ccc;
+  font-size: 1.1em;
+}
+
+.buttons button:first-child {
+  margin-right: 5px;
 }
 
 .total-container {
   width: 100%;
+  height: 50px;
   overflow: hidden;
 }
 
 .found-words {
-  padding: 0 30px;
-  overflow: hidden;
   width: 100%;
   margin-top: 50px;
+  padding: 0 30px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.fade-out {
+  opacity: 0;
+}
+
+.fade-in {
+  opacity: 1;
+  -webkit-transition:opacity 1s ease;
+   -moz-transition:opacity 1s ease;
+     -o-transition:opacity 1s ease;
+        transition:opacity 1s ease;
 }
 
 .found-words h3 {
-  font-size: 1.5em;
   width: 50%;
   float: left;
+  padding-top: 20px;
+  font-size: 1.5em;
 }
 
-#total{
+#total p{
   width: 50%;
   float: left;
   text-align: right;
   font-size: .95em;
-  line-height: 2.57em;
 }
 
 #total span {
   padding-left: 20px;
-  font-size: 2.57em;
   color: #c0ff00;
+  font-size: 2.5em;
 }
 
 .words-list {
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
   max-height: 340px;
   min-height: 50px;
   padding: 10px 0;
-  overflow: scroll;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  overflow: auto;
 }
 
 .words-list li {
-  line-height: 1.4em;
   display: block;
   overflow: hidden;
+  line-height: 1.4em;
   list-style: none;
   font-size: 1.5em;
 }
@@ -244,8 +278,7 @@ section#words-field {
   float: right;
 }
 
-
-/*   Game styles    */
+/* ----------Game styles---------------*/
 .is-active {
   background-color: rgba(256,256,256,.3);
 }
@@ -264,8 +297,7 @@ section#words-field {
   background-color: rgba(256,256,256,.5);
 }
 
-
-/*end of game*/
+/*----------End Of Game------------*/
 .finish {
   display: none;
   position: absolute;

@@ -39,7 +39,7 @@ q:before, q:after {
 }
 
 :focus {
-  outline: ?????;
+  outline: none;
 } 
 
 /* remember to highlight inserts somehow! */
